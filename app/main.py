@@ -4,7 +4,7 @@ def format_linter_error(error: dict) -> dict:
             "line": error.get("line_number", 0),
             "column": error.get("column_number", 0),
             "message": error.get("text", "No message"),
-            "name": error.get("name", "E501"),
+            "name": error.get("code", "E501"),
             "source": error.get("source", "flake8"),
         }.items()
         if value is not None
@@ -47,7 +47,7 @@ errors = [
         "line_number": 18,
         "column_number": 80,
         "text": "line too long (99 > 79 characters)",
-        "physical_line": ' return f"I like to filter, rounding, doubling, ' 
+        "physical_line": ' return f"I like to filter, rounding, doubling, '
         "store and decorate numbers: {', '.join(items)}!\"",
     },
     {
@@ -92,7 +92,8 @@ report_file = {
                 "line_number": 18,
                 "column_number": 80,
                 "text": "line too long (99 > 79 characters)",
-                "physical_line": ' return f"I like to filter, rounding, doubling, '
+                "physical_line":
+                    ' return f"I like to filter, rounding, doubling, '
                 "store and decorate numbers: {', '.join(items)}!\"",
             },
             {
@@ -101,10 +102,11 @@ report_file = {
                 "line_number": 18,
                 "column_number": 100,
                 "text": "no newline at end of file",
-                "physical_line": ' return f"I like to filter, rounding, doubling, '
+                "physical_line":
+                    ' return f"I like to filter, rounding, doubling, '
                 "store and decorate numbers: {', '.join(items)}!\"",
             },
-        ]
+    ]
 }
 
 print(format_linter_report(linter_report=report_file))
