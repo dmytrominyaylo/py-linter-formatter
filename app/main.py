@@ -1,13 +1,10 @@
 def format_linter_error(error: dict) -> dict:
     return {
-        key: value for key, value in {
-            "line": error.get("line_number", 0),
-            "column": error.get("column_number", 0),
-            "message": error.get("text", "No message"),
-            "name": error.get("code", "E501"),
-            "source": error.get("source", "flake8"),
-        }.items()
-        if value is not None
+        "line": error.get("line_number", 0),
+        "column": error.get("column_number", 0),
+        "message": error.get("text", "No message"),
+        "name": error.get("code", "E501"),
+        "source": error.get("source", "flake8"),
     }
 
 
