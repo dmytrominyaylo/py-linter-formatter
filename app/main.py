@@ -1,42 +1,24 @@
-def format_linter_error(error: dict) -> dict:
+def format_linter_error(single_error: dict) -> dict:
     return {
-        "line": error.get("line_number", 0),
-        "column": error.get("column_number", 0),
-        "message": error.get("text", "No message"),
-        "name": error.get("code", "E501"),
-        "source": error.get("source", "flake8"),
+        "line": single_error.get("line_number", 0),
+        "column": single_error.get("column_number", 0),
+        "message": single_error.get("text", "No message"),
+        "name": single_error.get("code", "E501"),
+        "source": single_error.get("source", "flake8"),
     }
 
 
-def format_single_linter_file(file_path: str, errors: list) -> dict:
+def format_single_linter_file(file_path: str, file_errors: list) -> dict:
     return {
-        "errors": [
-            {
-                "line": error["line_number"],
-                "column": error["column_number"],
-                "message": error["text"],
-                "name": error["code"],
-                "source": "flake8"
-            } for error in errors
-        ],
+        "errors":
+            [format_linter_error(file_error) for file_error in file_errors],
         "path": file_path,
-        "status": "failed" if errors else "passed"
+        "status": "failed" if file_errors else "passed"
     }
 
 
-def format_linter_report(linter_report: dict) -> list:
+def format_linter_report(full_report: dict) -> list:
     return [
-        {
-            "errors": [
-                {
-                    "line": error["line_number"],
-                    "column": error["column_number"],
-                    "message": error["text"],
-                    "name": error["code"],
-                    "source": "flake8"
-                } for error in errors
-            ],
-            "path": path,
-            "status": "failed" if errors else "passed"
-        } for path, errors in linter_report.items()
+        format_single_linter_file(file_path, path_errors)
+        for file_path, path_errors in full_report.items()
     ]
